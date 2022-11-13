@@ -43,6 +43,13 @@ We state complexity in amortized number of template class of function instantiat
 Note that pure lookups (usings) do not create any template class or function instatiations and are thus rated as 
 $$O(0)$$ .
 
+Algorithms
+----------
+
+The library distinguishes itself from other C++ compile time unit libraries by an encoding of the unit powers into 
+multiplicative group of reduced fractions of natural numbers  $$\\left<mathbb{Q}_{\mathbb{N}},\cdot\right$$.
+Es base unit is mapped to a unique prime number. Positive powers represented by the numerator, negative ones by 
+the denomniator.
 
 
 Earlier Effort

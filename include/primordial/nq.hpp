@@ -118,7 +118,7 @@ public:
     constexpr value_type den() const;          ///< query denominator (P)
 
     static constexpr NQ zero();                ///< constant for neutral element (S)
-    static constexpr NQ defective();          ///< constant for error element   (D)
+    static constexpr NQ defective();           ///< constant for error element   (D)
 
     constexpr bool valid() const;              ///< query `*this != degemerate()` but faster
     constexpr explicit operator bool() const;  ///< check for validity (not defective) (P)
@@ -129,7 +129,7 @@ public:
 
     constexpr kind get_kind() const;           ///< query kind  of instance
     
-    private:
+private:
     constexpr NQ(value_type n, 
                  value_type d, 
                  normalized_tag);              ///< internal constructor skipping ormalization (P)
@@ -151,7 +151,7 @@ public: ///\note current Standard *requires* that constexpr classes used as non 
 
 /// inline, constexpr and template code ////////////////////////////////////////////////////////////////////
 
-constexpr NQ::NQ() : NQ{zero()} {} 
+constexpr NQ::NQ() : num_{1}, den_{1}{} 
 
 constexpr NQ::NQ(value_type n) : NQ{n, 1, is_normalized} {} 
 

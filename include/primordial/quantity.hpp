@@ -1,30 +1,47 @@
 #pragma once
 
 #include <primordial/nq.hpp>
-#include <primordial/dims.hpp>
+#include <primordial/unit_system.hpp>
 #include <primordial/powermap.hpp>
 
 namespace primordial
 {           
-    template <unit_type, NQ, arithmetic_type>  class quantity;                    
-    template <unit_type u, arithmetic_type a>  class quantity<u,NQ::defective(),a>{}; ///< poison this one
-    
+    ///\brief tag to distinguish between relative and absolute quantities
+    enum quantity_kind 
+    {
+        relative,
+        absolute
+    };
+
+    template <unit_type U, arithmetic_type S, quantity_kind kind = quantity_kind::relative>  class quantity;                    
+
+    template <unit_type U, arithmetic_type S, quantity_kind kind> 
+    constexpr auto relative_cast(quantity<U, S, kind> const & q)
+    {
+        return quantity<U, S, quantity_kind::relative>{q.get_cofactor()};
+    }
+
+    template <unit_type U, arithmetic_type S, quantity_kind kind> 
+    constexpr auto absolute_cast(quantity<U, S, kind> const &q)
+    {
+        return quantity<U, S, quantity_kind::absolute>{q.get_cofactor()};
+    }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     namespace details
     {
-        template <arithmetic_type S, bool is_proper = true> // not zero or defective
-        struct qantity_base
+        constexpr bool plus_allowed(quantity_kind a, quantity_kind b)        
         {
-            constexpr S const get_cofactor() const{ return co_factor_; }
-            constexpr void set_cofactor_(S v){ co_factor_= v; }        
-            S co_factor_ = S{};
-        };
+            return ! (a == b) && a == quantity_kind::absolute;
+        }
 
-        template <arithmetic_type S> 
-        struct qantity_base<S, false>
+        constexpr bool minus_allowed(quantity_kind a, quantity_kind b)        
         {
-            constexpr S get_cofactor() const{ return S{}; }
-            constexpr void set_cofactor_(S v){}        
-        };        
+            return ! (a != b) && a == quantity_kind::relative;
+        }
+
     }
 
     ///\brief (pure) quantity in the base system `system`. 
@@ -42,69 +59,72 @@ namespace primordial
     ///\tparam S scalar should be a field or at least a ring if you do  not care for overflow
     ///\tparam S scalar should be a field or at least a ring if you do  not care for overflow
     ///\todo concept for system
-    template <unit_type unit, NQ exponents, arithmetic_type S> // S could also be array
-    class quantity : private details::qantity_base<S,(bool) exponents.num_>{
-        using inherited = details::qantity_base<S,(bool) exponents.num_ >;
+    template <unit_type U, arithmetic_type S, quantity_kind kind_> // S could also be array
+    class quantity {
     public:
         using value_type = S;
-        using unit_t = unit;
-        static constexpr NQ exp = exponents;
+        using unit_t = U;
+        static constexpr quantity_kind kind = kind_;
 
-        constexpr quantity(){}
-        explicit(exponents = NQ{}) quantity(S s){ this->set_cofactor(s); }
+        value_type cofactor;
 
-        constexpr bool is_defective() const{ return !exponents.valid(); } // overflows
-        constexpr bool is_scalar() const{ return exponents == NQ::zero(); }
+        constexpr quantity() : cofactor{} {}
+        explicit(unit_t::exponents != NQ{}) quantity(S const &s) : cofactor{s} {}
+        template <typename S_RHS> explicit quantity(quantity<U,S_RHS,kind> const&rhs): quantity{rhs.cofactor}{}
 
-        using inherited::get_cofactor;
-        using inherited::set_cofactor;
+        constexpr auto operator<=>(const quantity&) const = default; 
 
-        constexpr auto operator<=>(const quantity&) const = default;
-
-        constexpr quantity operator-(){return quantity{-this->value()}; }  
+        constexpr quantity operator-(){return quantity{-cofactor}; }  
         constexpr quantity operator+(){ return *this; }  
-        constexpr bool operator!(){ return !*this; }          
+        constexpr bool operator!() const { return !(bool)cofactor; }          
+        constexpr explicit operator bool() const { return (bool) cofactor; }                  
 
-        template <typename S_RHS> 
-        constexpr quantity &operator+=(quantity<unit,exponents,S_RHS> const &other)
+        template <typename S_RHS, quantity_kind rhs_kind> 
+        constexpr std::enable_if_t<details::plus_allowed(kind,rhs_kind), quantity&>
+            operator+=(quantity<U,S_RHS> const &other)
         { 
             set_cofactor(this->value + other.get_cofactor()); return *this; 
         }  
 
-        template <typename S_RHS> 
-        quantity &operator-=(quantity<unit,exponents,S_RHS> const &other)
+        template <typename S_RHS, quantity_kind rhs_kind> 
+            constexpr std::enable_if_t<details::minus_allowed(kind,rhs_kind), quantity&>
+            operator-=(quantity<U,S_RHS> const &other)
         {
              set_cofactor(this->value - other.get_cofactor()); return *this; 
         }  
 
-        template <typename S_RHS> 
-        friend auto operator+(quantity const &lhs, quantity<unit, exponents, S_RHS> const &rhs)
+        template <typename S_RHS, quantity_kind rhs_kind> 
+        friend constexpr std::enable_if_t<details::plus_allowed(kind,rhs_kind), 
+                                          quantity<U,std::common_type_t<S,S_RHS>,kind>>        
+            operator+(quantity const &lhs, quantity<U, S_RHS, rhs_kind> const &rhs)
         {
-            using C = std::common_type_t<S,S_RHS>;
-            return quantity<unit,exponents,C>(lhs.get_cofactor()) += rhs;
+            return { lhs.get_cofactor() + rhs.get_cofactor() };
         }
 
-        template <typename S_RHS> 
-        friend auto operator-(quantity const &lhs, quantity<unit, exponents, S_RHS> const &rhs)
+        template <typename S_RHS, quantity_kind rhs_kind> 
+        friend constexpr std::enable_if_t<details::minus_allowed(kind,rhs_kind), 
+                                          quantity<U,std::common_type_t<S,S_RHS>,kind>>        
+            operator-(quantity const &lhs, quantity<U, S_RHS, rhs_kind> const &rhs)
         {
             using C = std::common_type_t<S,S_RHS>;            
-            return quantity<unit,exponents,C>(lhs.get_cofactor()) -= rhs;
+            return { lhs.get_cofactor() - rhs.get_cofactor() };
+        }
+
+        template <NQ base_rhs, typename S_RHS, quantity_kind kind> 
+        friend auto operator*(quantity const &lhs, quantity<U, S_RHS, kind> const &rhs)
+        {
+            using C = std::common_type_t<S,S_RHS>;            
+            return quantity_unit<U() * rhs.unit_t(), C, kind>(lhs.get_cofactor() * rhs.get_cofactor());
         }
 
         template <NQ base_rhs, typename S_RHS> 
-        friend auto operator*(quantity const &lhs, quantity<unit, base_rhs, S_RHS> const &rhs)
+        friend auto operator/(quantity const &lhs, quantity<U, S_RHS, kind> const &rhs)
         {
             using C = std::common_type_t<S,S_RHS>;            
-            using resulting_unit = quantity<unit, exponents + base_rhs, C>; // type of result
-            return resulting_unit(lhs.get_cofactor() * rhs.get_cofactor());
-        }
-
-        template <NQ base_rhs, typename S_RHS> 
-        friend auto  operator/(quantity const &lhs, quantity<unit, base_rhs, S_RHS> const &rhs)
-        {
-            using C = std::common_type_t<S,S_RHS>;            
-            using resulting_unit = quantity<unit, exponents - base_rhs, C>;
-            return resulting_unit(lhs.get_cofactor() / rhs.get_cofactor());
+            return quantity_unit<U() / rhs.unit_t(), C, kind>(lhs.get_cofactor() / rhs.get_cofactor());
         }
     };
+
+
+
 }
