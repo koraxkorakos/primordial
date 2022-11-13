@@ -47,8 +47,8 @@ Algorithms
 ----------
 
 The library distinguishes itself from other C++ compile time unit libraries by an encoding of the unit powers into 
-multiplicative group of reduced fractions of natural numbers  $$\\left<mathbb{Q}_{\mathbb{N}},\cdot\right$$.
-Es base unit is mapped to a unique prime number. Positive powers represented by the numerator, negative ones by 
+multiplicative group of reduced fractions of natural numbers  $$\left(\mathbb{Q}_{\mathbb{N}},\cdot\right)$$.
+Each base unit is mapped to a unique prime number. Positive powers represented by the numerator, negative ones by 
 the denomniator.
 
 
@@ -57,31 +57,31 @@ Earlier Effort
 
 ### Papers
 
-R. F. Cmelik and N. H. Gehani, “Dimensional Analysis with C++,” IEEE Softw., vol. 5, Art. no. 3, May 1988.
-Z. D. Umrigar, “Fully Static Dimensional Analysis with C++,” SIGPLAN Not., vol. 29, Art. no. 9, Sep. 1994.
+* R. F. Cmelik and N. H. Gehani, “Dimensional Analysis with C++,” IEEE Softw., vol. 5, Art. no. 3, May 1988.
+* Z. D. Umrigar, “Fully Static Dimensional Analysis with C++,” SIGPLAN Not., vol. 29, Art. no. 9, Sep. 1994.
 
 ### Impementations
-M. C. Schabel, “Boost.Units,” software 1.0, 2003.C++26 Proposal
-I. Shtukarev, “Boost Hana,” Boost C++ Libraries, software 1.71, 2015. (small example)
-J. M. Leon, “Units and measures for C++ 11,” software, May 2017.
-S. Watanabe, “cppnow17-units,” 2019.
-M. Kenniston and M. Moene, “PhysUnits-CT-Cpp11,” software, 2021.
-“The C++ Units Library,” WPILIb, software, Jan. 2022.
-N. Holthaus, “units,” software 2.3.3, 2022.
-M. Pusz and R. Smith, “MP-UNITS,” software, 2022.
-etc. (Ducharm Units, Sende Units , Amour Units, Leon Units,…)
+* M. C. Schabel, “Boost.Units,” software 1.0, 2003.C++26 Proposal
+* I. Shtukarev, “Boost Hana,” Boost C++ Libraries, software 1.71, 2015. (small example)
+* J. M. Leon, “Units and measures for C++ 11,” software, May 2017.
+* S. Watanabe, “cppnow17-units,” 2019.
+* M. Kenniston and M. Moene, “PhysUnits-CT-Cpp11,” software, 2021.
+* “The C++ Units Library,” WPILIb, software, Jan. 2022.
+* N. Holthaus, “units,” software 2.3.3, 2022.
+* M. Pusz and R. Smith, “MP-UNITS,” software, 2022.
+* etc. (Ducharm Units, Sende Units , Amour Units, Leon Units,…)
 
 ### C++ Standard Proposal (C++26)
-M. Pusz, “A C++ Approach to Physical Units,” ISO/IEC JTC1/SC22/WG21 14882: Programming Language — C++, published proposal P1935R2, Jan. 2020.
+* M. Pusz, “A C++ Approach to Physical Units,” ISO/IEC JTC1/SC22/WG21 14882: Programming Language — C++, published proposal P1935R2, Jan. 2020.
 
 Prerequisites
 -------------
 
 The library has been written for C++20 Standard. It employs 
 
-- Concepts
-- Composite non type template arguments
-- `constexpr` functions
+* Concepts
+* Composite non type template arguments
+* `constexpr` functions
 
 Howerver it could be straightforwardly backported to older versions of the standard by sybstituting two `uintmax_t` non type template parameters 
 for the `NQ` class and expanding the `constexpr` functions.
