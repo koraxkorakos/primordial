@@ -39,16 +39,17 @@ demanding because they produce definitions, not just declarations.
 
 For a discussion and concrete benchmarks see the [Kwasir](https://github.com/kvasir-io/Kvasir). 
 
-We state complexity in amortized number of template class of function instantiations using bi O notationb. 
+We state complexity in amortized number of template class of function instantiations using bi $$O$$ notationb. 
 Note that pure lookups (usings) do not create any template class or function instatiations and are thus rated as 
-$$O(0)$$ .
+$$O(0)$$ . Note that type aliases (`using`) and concepts to not contribute to the complexity as no dynamic memory
+needs to be allocated on their use, which needs to low compitime cost.
 
 Algorithms
 ----------
 
-The library distinguishes itself from other C++ compile time unit libraries by an encoding of the unit powers into 
-multiplicative group of reduced fractions of natural numbers  $$\left(\mathbb{Q}_{\mathbb{N}},\cdot\right)$$.
-Each base unit is mapped to a unique prime number. Positive powers represented by the numerator, negative ones by 
+The library distinguishes itself from other C++ compile time unit libraries by an encoding the unit powers into 
+elements of the multiplicative group of reduced fractions of natural numbers  $$\left(\mathbb{Q}_{\mathbb{N}},\cdot\right)$$.
+Each base unit is mapped to a unique prime number. Positive powers are represented by the numerator, negative ones by 
 the denomniator.
 
 
