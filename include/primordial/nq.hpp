@@ -211,8 +211,7 @@ constexpr NQ &NQ::operator+=(NQ const &rhs){
     using std::gcd;
 
     // special cases (avod divion by zero)
-    if (not (den_ * rhs.den_)) return *this = defective();
-    if (not (num_ * rhs.num_)) return *this = zero();
+    if (!(den_ && rhs.den_)) return *this = defective();
 
     num_ /= gcd(num_, rhs.den_);
     den_ /= gcd(rhs.num_, den_);
