@@ -19,14 +19,14 @@ namespace primordial
             using std::numeric_limits;
             using T = decltype(v);
             return v 
-                ? numeric_limits<T>::digits - countl_zero(v) - 1 // std::countl_zero
+                ? numeric_limits<T>::digits - std::countl_zero(v) - 1 // std::countl_zero
                 : -1;
         }
     }
 
     ///\par complexity
     /// - o(1) for low primes (up to 19) and non prime powers of 2
-    /// - o(n) otheriwise
+    /// - o(n) otherwise
     constexpr bool is_prime(std::unsigned_integral auto k)
     {
         using std::numeric_limits;
@@ -86,7 +86,7 @@ namespace primordial
 
         return  k < -numeric_limits<T>::max() //not representable positively
                 ? false
-                : is_prime(-make_signed_t<decltype(k)>(k));
+                : is_prime(-std::make_signed_t<decltype(k)>(k));
     }
 
     ///\retval 0 on overflow

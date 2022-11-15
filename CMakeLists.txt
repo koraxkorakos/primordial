@@ -5,17 +5,16 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS off)
 #set (CMAKE_GENERATOR_PLATFORM x64)
 
-#find_package(Boost REQUIRED program_options)
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG release-1.12.1
+)
 
-#include(FetchContent)
-#FetchContent_Declare(
-#  googletest
-#  GIT_REPOSITORY https://github.com/google/googletest.git
-#  GIT_TAG release-1.12.1
-#)
 # For Windows: Prevent overriding the parent project's compiler/linker settings
-# set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-# FetchContent_MakeAvailable(googletest)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
 
 option(PRIMORDIAL_ALLOW_INTRINSICS "Compiler intrinsics may be used" off)
 option(PRIMORIAL_ALLOW_UINT128 "Compiler __UINT128 type may be used" off)
@@ -40,7 +39,7 @@ target_include_directories (primordial
 )
 							
 set_property(TARGET 
-			 primordial
+             primordial
 			 PROPERTY 
 			 PUBLIC_HEADER
 			 include/ct/details/utility.hpp
@@ -53,6 +52,6 @@ set_property(TARGET
 )
 
 if (${BUILD_TESTS})
-#  enable_testing()
-#  add_subdirectory(test)
+  enable_testing()
+  add_subdirectory(test)
 endif()
