@@ -27,50 +27,23 @@ namespace primordial
     ///\par complexity
     /// - o(1) for low primes (up to 19) and non prime powers of 2
     /// - o(n) otherwise
-    constexpr bool is_prime(std::unsigned_integral auto k)
-    {
-        using std::numeric_limits;
-
-        using T = decltype(k);
-        bool const is_odd = k &  T(1);
-        if (not is_odd) return k == 2U; // divisible by 2, but not  2
-        else
-        {
-            switch (k)
-            {
-                    case 1: 
-                    case 9:                     
-                    case 15: return false;
-
-                    case 3: 
-                    case 5: 
-                    case 7: 
-                    case 11: 
-                    case 13:
-                    case 17: 
-                    case 19: return true;                
-
-                    default: {
-                        if (!(k % 3)|| !(k % 5) || !(k % 7) || !(k % 11) || !(k % 13)  || !(k % 17) || !(k % 19))
-                            return false; // divisble by 3, 5, 7, 11, 13, 17, 19
-                        
-                        auto const log2k = details::log2(k);
-                        T const sqrt_bound = k >> (log2k / 2);
-                        T const tested_bound = (k + 22) / 23; // one factor must be at least 23
-                        T const bound = std::min(sqrt_bound, tested_bound); 
-                        
-                        for (uintmax_t j = 5U; j <= bound; )
-                        {
-                            if (!(k % j)) return false; // divisble by k
-                            j += 2;
-
-                            if (!(k % j)) return false; // divisble by k
-                            j += 4;
-                        }
-
-                        return true;
-                    }
+    constexpr bool is_prime(std::uintmax_t k)
+    {        
+        if (k <= 1) return false;
+        if (k % 2 == 0) return k == 2;
+        if (k % 3 == 0) return k == 3;
+        if (k % 5 == 0) return k == 5;
+        else{
+            auto const log2k = details::log2(k);
+            decltype(k) const sqrt_bound = (1ULL << (log2k / 2 + 1)) - 1;            
+            for(auto j = 5; j <= sqrt_bound;)            
+            {   
+                j += 2;                
+                if (k % j == 0) return false;
+                j += 4;
+                if (k % j == 0) return false;
             }
+            return true;
         }
     }
 
@@ -86,13 +59,12 @@ namespace primordial
 
         return  k < -numeric_limits<T>::max() //not representable positively
                 ? false
-                : is_prime(-std::make_signed_t<decltype(k)>(k));
+                : is_prime(std::make_signed_t<decltype(k)>(-k));
     }
 
     ///\retval 0 on overflow
-    constexpr uintmax_t next_prime(uintmax_t n)
+    /*constexpr*/ uintmax_t next_prime(uintmax_t n)
     {
-        using T = decltype(n);
         switch (n)
         {
             case 0: 
@@ -118,33 +90,49 @@ namespace primordial
             case 20:
             case 21:                          
             case 22: return 23U;                         
-            default: {
-                switch(n % T(6)) // start value
+            case 23: 
+            case 24: 
+            case 25:             
+            case 26:                         
+            case 27:                                     
+            case 28: return 29U;
+            case 29: 
+            case 30: return 31U;                        
+            case 31: 
+            case 32: 
+            case 33: return 37U;
+            default: { 
+                auto n_old = n;
+                switch (n % 6)
                 {
-                case 0: n += 1; break;   
-                case 1: n += 4; break;   
-                case 2: n += 3; break;
-                case 3: n += 2; break;
-                case 4: n += 1; break;
-                case 5: n += 2; break;               
-                }
-
-                // increments
-                auto const m = n  % T(6) == 1;
-                T const a = m ? 4 : 2;
-                T const b = m ? 2 : 4;
-
+                case 0: n += 1; break; 
+                case 1: n += 4; break; 
+                case 2: n += 3; break; 
+                case 3: n += 2; break; 
+                case 4: n += 1; break; 
+                case 5: n += 2; break;                                                                                 
+                }               
                 for(;;)
                 {
-                    if (is_prime(n)) return n; else n += a;
-                    if (is_prime(n)) return n; else n += b;
-                }           
+                    if (is_prime(n)) return n;
+                    n_old = n;
+                    n += 4;
+                    n = n_old;                   
+                    if (n < n_old) return 0;
+
+                    if (is_prime(n)) return n;
+                    n_old = n;
+                    n += 1; 
+                    if (n < n_old) return 0;
+                }
             }        
         }
+
+        return 0;
     }
 
     ///\note we rate 1 as the zeroth prime
-    constexpr uintmax_t nth_prime(unsigned n)
+    /*constexpr*/ uintmax_t nth_prime(unsigned n)
     {
         switch (n)
         {
@@ -157,10 +145,12 @@ namespace primordial
             case 6: return 13U;
             case 7: return 17U;
             case 8: return 19U;
+            case 9: return 23U;
+            case 10: return 29U;            
             default: {
-                n -= 8U;
-                uintmax_t p = 22U;
-                for(; n; --n) p = next_prime(p);
+                n -= 10U;
+                uintmax_t p = 30U;
+                for(; n; --n) p = next_prime(p); 
                 return p;
             }        
         }
