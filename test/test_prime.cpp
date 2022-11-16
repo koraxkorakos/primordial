@@ -130,5 +130,16 @@ TEST(PrimeTests, nth_prime_tests)
     }
 }
 
+TEST(PrimeTests, get_power_in_tests)
+{
+    using primordial::get_power_in;
+    EXPECT_EQ(get_power_in(25, 75), 1);
+    EXPECT_EQ(get_power_in(3, 75), 1);
+    EXPECT_EQ(get_power_in(25, 5), 0);
+    EXPECT_EQ(get_power_in(3, 3), 1);
+    EXPECT_EQ(get_power_in(0, 1), 0);
+    EXPECT_EQ(get_power_in(1, 0), -1);
+    EXPECT_EQ(get_power_in(1, 5), -1);
 
-} // namespace
+} 
+}

@@ -156,12 +156,15 @@ namespace primordial
         }
     } 
 
-    ///\brief compute how many times the number `q` can be divided by `p` without rest
-    constexpr int get_power_in(uintmax_t a, uintmax_t b)
+    ///\brief compute how many times the number `b` can be divided by `a` without rest
+    ///\retval -1 if `a == 1` denoting infinite times
+    constexpr intmax_t get_power_in(uintmax_t a, uintmax_t b)
     {
-        int power = 0;        
-        if (!(a && b)) return 0;
-        for (int power = 0;  !(b %= a);  b /= a, ++power);
+        if (a == 0) return b == 0 ? -1 : 0;
+        if (a == 1) return -1;
+
+        intmax_t power = 0;
+        for (;  b % a == 0;  b /= a) ++power;        
         return power;
     }
 
