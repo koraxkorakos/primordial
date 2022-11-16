@@ -64,6 +64,7 @@ namespace primordial
     public:
         using value_type = S;
         using unit_t = U;
+        using system = typename U::system;
         static constexpr quantity_kind kind = kind_;
 
         value_type cofactor;
@@ -110,18 +111,20 @@ namespace primordial
             return { lhs.get_cofactor() - rhs.get_cofactor() };
         }
 
-        template <NQ base_rhs, typename S_RHS, quantity_kind kind> 
-        friend auto operator*(quantity const &lhs, quantity<U, S_RHS, kind> const &rhs)
+        template <NQ q_rhs, typename S_RHS, quantity_kind kind> 
+        friend constexpr auto operator*(quantity const &lhs, quantity<unit<system, q_rhs>, S_RHS, kind> const &rhs)
         {
+            using U_rhs = unit<system,q_rhs>;            
             using C = std::common_type_t<S,S_RHS>;            
-            return quantity_unit<U() * rhs.unit_t(), C, kind>(lhs.get_cofactor() * rhs.get_cofactor());
+            return quantity<decltype(U() * U_rhs{}), C, kind>{lhs.get_cofactor() * rhs.get_cofactor()};
         }
 
-        template <NQ base_rhs, typename S_RHS> 
-        friend auto operator/(quantity const &lhs, quantity<U, S_RHS, kind> const &rhs)
+        template <NQ q_rhs, typename S_RHS> 
+        friend constexpr auto operator*(quantity const &lhs, quantity<unit<system, q_rhs>, S_RHS, kind> const &rhs)
         {
+            using U_rhs = unit<system,q_rhs>;            
             using C = std::common_type_t<S,S_RHS>;            
-            return quantity_unit<U() / rhs.unit_t(), C, kind>(lhs.get_cofactor() / rhs.get_cofactor());
+            return quantity<decltype(U() * U_rhs{}), C, kind>{lhs.get_cofactor() / rhs.get_cofactor()};
         }
     };
 

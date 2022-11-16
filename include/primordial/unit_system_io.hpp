@@ -11,6 +11,7 @@
 
 namespace primordial
 {
+    ///\todo not needed?
     struct default_unit_streamer
     {
         explicit default_unit_streamer(unsigned dim_no) : sym(char('a' + dim_no)){}
