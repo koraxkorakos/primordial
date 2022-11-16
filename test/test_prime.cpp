@@ -9,7 +9,8 @@
 #include "demangle.hpp"
 
 namespace {
-    using namespace ct::testing;
+
+using namespace primordial::testing;
 
 template <typename T>
 constexpr bool is_odd(T v){ return T(1) & v; }

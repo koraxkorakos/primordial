@@ -40,9 +40,8 @@ namespace primordial
 
     namespace details
     {
-        struct unit_system_base
-        {
-        private:
+        class unit_system_base
+        {        
             unit_system_base() = default;
             unit_system_base(unit_system_base const &) = default;
             template <typename D, dimension_type... Dims> friend class primordial::unit_system;
@@ -50,7 +49,7 @@ namespace primordial
     }   
 
     template <unit_system_type sys, NQ q> 
-    struct unit
+    struct unit 
     {
     // reflectio9n
         static constexpr NQ exponents = q;
@@ -76,16 +75,22 @@ namespace primordial
         template <NQ q_rhs>
         friend constexpr auto operator/(unit lhs, unit<system,q_rhs> rhs){ return unit<system,rhs.exponents - rhs.exponents>{}; }
 
-    // equality  / uinequality operators
+    // equality  / inequality operators
+        friend constexpr bool operator==(unit, unit){ return true; }                           ///< \overload
+        friend constexpr bool operator!=(unit, unit){ return false; }                          ///< \overload
 
-        friend constexpr auto operator==(unit lhs,unit rhs){ return true; }                           ///< \overload
-        friend constexpr auto operator!=(unit lhs,unit rhs){ return !(lhs == rhs); }                  ///< \overload
+        template <unit_system_type sys2>
+        friend constexpr bool operator==(unit, unit<sys2,NQ{}>){ return q == NQ{}; }           ///< \overload
+
+        template <unit_system_type sys2>
+        friend constexpr bool operator!=(unit, unit<sys2,NQ{}>){ return q != NQ{}; }           ///< \overload
+
 
         template <NQ q_rhs>
-        friend constexpr auto operator==(unit lhs, unit<system,q_rhs> rhs){ return false; }           ///< \overload
+        friend constexpr bool operator==(unit, unit<system,q_rhs>){ return false; }            ///< \overload
 
         template <NQ q_rhs>
-        friend constexpr auto operator!=(unit lhs, unit<system,q_rhs> rhs){ return !(lhs == rhs); }   ///< \overload    
+        friend constexpr bool operator!=(unit, unit<system,q_rhs>){ return true; }             ///< \overload    
     };
 
     /// poison defective type
@@ -102,10 +107,10 @@ namespace primordial
         using dimensions = meta::type_list<Dims...>;
 
         template <dimension_type T>
-        static constexpr unsigned prime = nth_prime(meta::pos<T, Dims...>::value);
+        static constexpr unsigned prime = nth_prime(1 + meta::pos<T, Dims...>::value);
 
         template <dimension_type T>
-        using base_unit = unit<unit_system, NQ{prime<T>}>;
+        using base_unit = unit<D, NQ{prime<T>}>;
 
         // hide this in derived class if you wnat nicer unit names
         using unit_streamer = default_unit_streamer;

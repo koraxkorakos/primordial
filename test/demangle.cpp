@@ -7,7 +7,7 @@
 #  include <cxxabi.h>
 #endif
 
-namespace ct
+namespace primordial
 {
     namespace testing
     {    

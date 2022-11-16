@@ -4,7 +4,7 @@
 #include <iosfwd>
 #include <typeinfo>
 
-namespace ct
+namespace primordial
 {
     namespace testing
     {
