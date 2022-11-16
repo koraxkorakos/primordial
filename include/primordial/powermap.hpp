@@ -11,7 +11,7 @@ namespace primordial
     constexpr int  get_power_in(unsigned p, NQ q)
     {
         auto const np =  get_power_in(p, q.num());
-        return np  > 1 ? np : -get_power_in(p, q.den());
+        return np  > 0 ? np : -get_power_in(p, q.den());
     }
 
     constexpr int num_dims(NQ q)
@@ -25,12 +25,12 @@ namespace primordial
                 int dims = 0;
                 auto n = q.num();
                 auto d = q.den();
-                uintmax_t prime = 1; 
-                for(; n > 1 && d > 1; ++dims) 
-                {
-                    prime = next_prime(prime);     
-                    while(n /= prime);
-                    while(d /= prime); 
+                for(uintmax_t prime = 2; 
+                     n > 1 || d > 1;
+                     ++dims, prime = next_prime(prime)) 
+                {                    
+                    while(n % prime == 0) n /= prime;
+                    while(d % prime == 0) d /= prime; 
                 }
                 return dims;
             }
