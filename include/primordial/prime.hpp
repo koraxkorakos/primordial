@@ -63,7 +63,7 @@ namespace primordial
     }
 
     ///\retval 0 on overflow
-    /*constexpr*/ uintmax_t next_prime(uintmax_t n)
+    constexpr uintmax_t next_prime(uintmax_t n)
     {
         switch (n)
         {
@@ -132,7 +132,7 @@ namespace primordial
     }
 
     ///\note we rate 1 as the zeroth prime
-    /*constexpr*/ uintmax_t nth_prime(unsigned n)
+    constexpr uintmax_t nth_prime(unsigned n)
     {
         switch (n)
         {

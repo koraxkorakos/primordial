@@ -121,7 +121,7 @@ public:
     static constexpr NQ defective();           ///< constant for error element   (D)
 
     constexpr bool valid() const;              ///< query `*this != degemerate()` but faster
-    constexpr explicit operator bool() const;  ///< check for validity (not defective) (P)
+    constexpr explicit operator bool() const;  ///< check for `zero()` (P)
 
     constexpr NQ operator-() const;            ///< inverse element (P)
     constexpr NQ &operator+=(NQ const &rhs);   ///< ads rhs (O)
@@ -172,7 +172,7 @@ constexpr NQ::NQ(value_type n, value_type d) : num_{n}, den_{d}
 
 constexpr NQ::NQ(value_type n, 
                  value_type d, 
-                 normalized_tag) : num_{n}, den_{1U}
+                 normalized_tag) : num_{n}, den_{d}
 { 
 }
 
@@ -202,7 +202,7 @@ constexpr NQ::value_type NQ::den() const
 
 constexpr NQ::operator bool () const
 {
-    return !den_; // no need to check `num_` since `!num_ == !den_`
+    return *this != zero();
 }
 
 ///\return instance

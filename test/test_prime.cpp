@@ -98,7 +98,6 @@ REGISTER_TYPED_TEST_SUITE_P(PrimeTestsFixture, is_prime_prime, is_prime_non_prim
 using Types = testing::Types<signed char, unsigned char, short, unsigned short, int, unsigned, long, unsigned long, long long, unsigned long long>;
 INSTANTIATE_TYPED_TEST_SUITE_P(_, PrimeTestsFixture, Types);
 
-///\return 0 on overflow
 TEST(PrimeTests, next_prime_tests)
 {
   using primordial::next_prime;    
