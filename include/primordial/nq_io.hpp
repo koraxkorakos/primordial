@@ -8,5 +8,8 @@ namespace primordial {
 ///\brief print in the form `99999/999999` 
 std::ostream &operator<<(std::ostream &os, NQ const & v);
 
+///\brief print in the form `99999/999999` 
+std::ostream &operator<<(std::ostream &os, NQ::kind k);
+
 
 } // namespace ct

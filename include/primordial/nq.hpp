@@ -263,7 +263,10 @@ constexpr bool NQ::valid() const
 }
 
 constexpr NQ::kind NQ::get_kind() const {
-    return !den_ ? kind::defective : !num_ ? kind::zero : kind::valid;
+    return !den_ ? kind::defective 
+        : *this == zero()
+          ? kind::zero 
+          : kind::valid;
 };
 
 

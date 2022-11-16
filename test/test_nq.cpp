@@ -105,3 +105,48 @@ TEST(NqTests,  test_NQ_plusequal)
    EXPECT_EQ(NQ(0,0) += NQ(3,25), NQ(0,0));
    EXPECT_EQ(NQ(3,2) += NQ(0,0), NQ(0,0));
 }
+
+TEST(NqTests,  test_NQ_minusequal)
+{
+   EXPECT_EQ(NQ(2,3) -= NQ(25,3), NQ(6,75));
+   EXPECT_EQ(NQ(3,2) -= NQ(3,25), NQ(75,6));
+   EXPECT_EQ(NQ(3,1) -= NQ(3,1), NQ(1,1));
+   EXPECT_EQ(NQ(0,0) -= NQ(3,25), NQ(0,0));
+   EXPECT_EQ(NQ(3,2) -= NQ(0,0), NQ(0,0));
+}
+
+TEST(NqTests,  test_NQ_valid)
+{
+   EXPECT_TRUE(NQ(2,3).valid());
+   EXPECT_TRUE(NQ(1,1).valid());
+   EXPECT_FALSE(NQ(0,0).valid());
+}
+
+TEST(NqTests,  test_NQ_get_kind)
+{
+   EXPECT_EQ(NQ(2,3).get_kind(), NQ::kind::valid);
+   EXPECT_EQ(NQ(0,0).get_kind(), NQ::kind::defective);
+   EXPECT_EQ(NQ::zero().get_kind(), NQ::kind::zero);
+}
+
+TEST(NqTests,  test_NQ_kind_streamout)
+{
+   {    
+     std::stringstream s;
+     s << NQ::kind::defective; 
+     EXPECT_TRUE(s);
+     EXPECT_EQ(s.str(), "defective");
+   }
+   {    
+     std::stringstream s;
+     s << NQ::kind::zero; 
+     EXPECT_TRUE(s);
+     EXPECT_EQ(s.str(), "zero");
+   }
+   {    
+     std::stringstream s;
+     s << NQ::kind::valid; 
+     EXPECT_TRUE(s);
+     EXPECT_EQ(s.str(), "valid");
+   }      
+}
