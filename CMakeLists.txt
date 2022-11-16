@@ -28,7 +28,8 @@ add_library(primordial)
 target_compile_features(primordial PUBLIC cxx_std_20)
 target_sources(primordial
                PRIVATE
-			   src/primordial.cpp)
+			   src/primordial.cpp
+			   src/nq_io.cpp)
 
 target_include_directories (primordial 
                             PUBLIC 
