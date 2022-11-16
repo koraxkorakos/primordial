@@ -43,6 +43,17 @@ namespace primordial {
     template <> struct uint_type<32> : std::type_identity<uint32_t>{};
     template <> struct uint_type<64> : std::type_identity<uint64_t>{};
     
+#ifndef CT_NO_CXX_EXTENSION
+
+#  ifdef __SIZEOF_INT128__
+      template <> struct uint_type<128> : std::type_identity<__uint128_t>{};
+      template <> struct int_type<128> : std::type_identity<__int128_t>{};
+#  endif
+#endif
+
+
     template <int bits> using uint_type_t = typename uint_type<bits>::type;
+
+
 }
 

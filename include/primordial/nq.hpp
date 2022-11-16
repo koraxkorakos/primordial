@@ -124,7 +124,7 @@ public:
     constexpr explicit operator bool() const;  ///< check for `zero()` (P)
 
     constexpr NQ operator-() const;            ///< inverse element (P)
-    constexpr NQ &operator+=(NQ const &rhs);   ///< ads rhs (O)
+    constexpr NQ &operator+=(NQ const &rhs);    ///< ads rhs (O)
     constexpr NQ &operator-=(NQ const &rhs);   ///< add additive inverse of rhs (O)
 
     constexpr kind get_kind() const;           ///< query kind  of instance
@@ -213,12 +213,17 @@ constexpr NQ &NQ::operator+=(NQ const &rhs){
     // special cases (avod divion by zero)
     if (!(den_ && rhs.den_)) return *this = defective();
 
-    num_ /= gcd(num_, rhs.den_);
-    den_ /= gcd(rhs.num_, den_);
+    auto const a = gcd(num_, rhs.den_);
+    auto const b = gcd(den_, rhs.num_);
+
+    num_ /= a;
+    den_ /= b;
+    auto const rn = rhs.num_ /  b;
+    auto const rd = rhs.den_ /  a;
 
     ///\note `gcd` has many divisions, so not worth opimizing overflow detection
-    bool const has_overflowed = umult_overflow(num_, rhs.num_, num_)
-                             || umult_overflow(den_, rhs.den_, den_);
+    bool const has_overflowed = umult_overflow(num_, rn, num_)
+                             || umult_overflow(den_, rd, den_);
         
     if (has_overflowed) *this = defective();
 

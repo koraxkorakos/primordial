@@ -92,8 +92,16 @@ TEST(NqTests,  test_NQ_uneuqal)
    EXPECT_TRUE(NQ(2,3) != NQ::zero());   
 }
 
-
 TEST(NqTests,  test_NQ_uminus)
 {
    EXPECT_EQ(-NQ(2,3), NQ(3,2));
+}
+
+TEST(NqTests,  test_NQ_plusequal)
+{
+   EXPECT_EQ(NQ(2,3) += NQ(25,3), NQ(50,9));
+   EXPECT_EQ(NQ(3,2) += NQ(3,25), NQ(9,50));
+   EXPECT_EQ(NQ(3,1) += NQ(1,3), NQ(1,1));
+   EXPECT_EQ(NQ(0,0) += NQ(3,25), NQ(0,0));
+   EXPECT_EQ(NQ(3,2) += NQ(0,0), NQ(0,0));
 }

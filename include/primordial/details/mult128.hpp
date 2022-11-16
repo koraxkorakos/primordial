@@ -8,6 +8,9 @@
 namespace primordial
 {
 
+///\overload
+constexpr bool umult_overflow(uintmax_t a, uintmax_t b, uintmax_t &result);
+
 ///\brief 64bit multiplication with overflow detection
 ///\retval true `a * b` did  overflow
 ///\retval false otherwise
@@ -15,8 +18,6 @@ namespace primordial
 template <std::unsigned_integral T> 
 constexpr bool umult_overflow(T a, T b, T &result);
 
-///\overload
-constexpr bool umult_overflow(uintmax_t a, uintmax_t b, uintmax_t &result);
 
 ///\brief 64bit multiplication with overflow detection
 ///\par algorithm
@@ -30,7 +31,7 @@ constexpr bool umult_overflow_longdiv(T a, T b, T &result);
 // IMPLEMENTATION ////////////////////////////////////////////////////////////////////////////////////////////////
 
 template <std::unsigned_integral T>
-constexpr bool umult_overflow(T a, T b, T &result)
+constexpr bool umult_overflow(T a, T b, T &result) 
 {
     constexpr auto digits = std::numeric_limits<T>::digits;
     using D = uint_type_t<digits * 2>;    
@@ -64,7 +65,6 @@ constexpr bool umult_overflow_longdiv(T a, T b, T &result)
 }
 
 #ifndef CT_NO_CXX_EXTENSION
-
 #  ifdef __SIZEOF_INT128__
 constexpr bool umult_overflow_large(uint64_t a, uint64_t b, uint64_t &result){
 #   define CT_HAS_UMULT_OVERFLOW_LARGE  
