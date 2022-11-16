@@ -17,16 +17,14 @@ TYPED_TEST_SUITE_P(UMultOverflowFictureTestFixture);
 
 TYPED_TEST_P(UMultOverflowFictureTestFixture, test_without_overflow)
 {
-    /*
     constexpr TypeParam max_v = sqrt(127.0);
     for (TypeParam k=0; k!=max_v; ++k)
-        for (TypeParam j=0; k!=max_v; ++j)
+        for (TypeParam j=0; j!=max_v; ++j)
         {
             TypeParam result;
             EXPECT_FALSE(umult_overflow(k, j, result));
             EXPECT_EQ(result, k*j);
         }
-    */
 }
 
 TYPED_TEST_P(UMultOverflowFictureTestFixture, test_with_overflow)
