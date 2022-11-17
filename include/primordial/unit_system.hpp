@@ -94,7 +94,7 @@ namespace primordial
     };
 
     /// poison defective type
-    template <unit_system_type system> struct unit<system, NQ::zero()>{};    
+    template <unit_system_type system> struct unit<system, NQ::defective()>{};    
 
     class default_unit_streamer;
 
