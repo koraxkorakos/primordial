@@ -40,7 +40,7 @@ namespace primordial
     template <NQ q>
     constexpr auto make_powermap()
     {        
-        std::array<unsigned, num_dims(q)> a;
+        std::array<int, num_dims(q)> a;
         uintmax_t p = 0;
         for (unsigned k=0; k != a.size(); ++k)
         {

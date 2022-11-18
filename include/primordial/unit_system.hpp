@@ -41,10 +41,13 @@ namespace primordial
     namespace details
     {
         class unit_system_base
-        {        
+        {      
+        private:
             unit_system_base() = default;
             unit_system_base(unit_system_base const &) = default;
-            template <typename D, dimension_type... Dims> friend class primordial::unit_system;
+            ~unit_system_base() = default;
+
+            template <typename D, dimension_type... Dims> friend class primordial::unit_system;            
         };
     }   
 
@@ -96,24 +99,27 @@ namespace primordial
     /// poison defective type
     template <unit_system_type system> struct unit<system, NQ::defective()>{};    
 
-    class default_unit_streamer;
+    class unit_streamer_interface;
 
-    ///\brief 
+     ///\brief 
     /// - CRTP
     ///\tparam D derived class
     template <typename D, dimension_type... Dims> 
     struct unit_system : details::unit_system_base
     {
         using dimensions = meta::type_list<Dims...>;
-
+        
         template <dimension_type T>
         static constexpr unsigned prime = nth_prime(1 + meta::pos<T, Dims...>::value);
 
         template <dimension_type T>
-        using base_unit = unit<D, NQ{prime<T>}>;
+        using base_unit_type = unit<D, NQ{prime<T>}>;
 
-        // hide this in derived class if you wnat nicer unit names
-        using unit_streamer = default_unit_streamer;
+        template <dimension_type T>
+        constexpr auto base_unit(){ return base_unit_type<T>{}; }
+
+        template <unsigned k>
+        constexpr auto base_unit_at(){ return base_unit_type<meta::at<k,dimensions>>{}; }
     };
 
 }

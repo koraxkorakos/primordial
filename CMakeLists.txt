@@ -29,7 +29,9 @@ target_compile_features(primordial PUBLIC cxx_std_20)
 target_sources(primordial
                PRIVATE
 			   src/primordial.cpp
-			   src/nq_io.cpp)
+			   src/nq_io.cpp
+			   src/unit_system_io.cpp
+			   src/supersub.cpp)
 
 target_include_directories (primordial 
                             PUBLIC 

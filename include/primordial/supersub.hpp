@@ -7,7 +7,7 @@
 
 ///\file for UTF8 streamout for characters in the 7 bit range, which are supported by UNICODE
 ///\todo stream input
-namespace ct{
+namespace primordial{
 
     ///\brief determines the verical position of text within the line
     enum class vertical_text_position { 
@@ -72,53 +72,53 @@ namespace ct{
     };
 
     template <typename T> 
-    constexpr auto superscript(T const & t)
+    constexpr text_decorator<T> superscript(T const & t)
     {
-        return text_decorator{t, vertical_text_position::super};
+        return text_decorator<T>{t, vertical_text_position::super};
     }
 
     template <typename T> 
-    constexpr auto subscript(T const & t)
+    constexpr text_decorator<T> subscript(T const & t)
     {
-        return text_decorator{t, vertical_text_position::sub};
+        return text_decorator<T>{t, vertical_text_position::sub};
     }
 
     template <typename T> 
-    constexpr auto utf8(T const & t)
+    constexpr text_decorator<T> utf8(T const & t)
     {
-        return text_decorator{t, vertical_text_position::regular, encoding::utf8};
+        return text_decorator<T>{t, vertical_text_position::regular, encoding::utf8};
     }     
 
     template <typename T> 
-    constexpr auto regular(text_decorator<T> t)
+    constexpr text_decorator<T> regular(text_decorator<T> t)
     {
         t.pos = vertical_text_position::regular;
         return t;
     }    
 
     template <typename T> 
-    constexpr auto superscript(text_decorator<T> t)
+    constexpr text_decorator<T> superscript(text_decorator<T> t)
     {
         t.pos = vertical_text_position::super;
         return t;
     }        
 
     template <typename T> 
-    constexpr auto subscript(text_decorator<T> t)
+    constexpr text_decorator<T> subscript(text_decorator<T> t)
     {
         t.pos = vertical_text_position::sub;
         return t;
     }       
 
     template <typename T> 
-    constexpr auto utf8(text_decorator<T> t)
+    constexpr text_decorator<T> utf8(text_decorator<T> t)
     {
         t.enc = encoding::utf8;
         return t;
     }             
 
     template <typename T> 
-    constexpr auto ascii(text_decorator<T> t)
+    constexpr text_decorator<T> ascii(text_decorator<T> t)
     {
         t.enc = encoding::ascii;
         return t;
@@ -126,24 +126,24 @@ namespace ct{
 
     template <typename T,typename Other>  
     constexpr text_decorator<T> rebind(text_decorator<Other> const &source, ///< [in] decorator providing attributes
-                                       T const &t                          ///< [in] new variable
+                                       T const &t                           ///< [in] new variable
                                       )
     {
         return text_decorator<T>{t, source.pos, source.enc};
     }
         
-
     template <std::signed_integral T>
     inline std::ostream &operator<<(std::ostream &os, text_decorator<T> t)
     {
         intmax_t v{t.t};
-        return os << make_text_decorator(v,t);
+        return os << text_decorator<intmax_t>(v);
     }
 
     template <std::unsigned_integral T>
     inline std::ostream &operator<<(std::ostream &os, text_decorator<T> t) 
     {
         uintmax_t v{t.t};
-        return os << make_text_decorator(v,t);
+        return os << text_decorator<uintmax_t>(v);
     }
+
 } // namespace ct

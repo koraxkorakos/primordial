@@ -1,6 +1,6 @@
 
 #include <primordial/unit_system.hpp>
-//#include <primordial/details/mult128.hpp>
+#include <primordial/unit_system_io.hpp>
 #include <gtest/gtest.h>
 #include <iterator>
 #include <limits>
@@ -30,12 +30,10 @@ TEST(UnitTests, test_unit_system)
     EXPECT_EQ(MKS::prime<Mass>, 3);
     EXPECT_EQ(MKS::prime<Time>, 5);
 
-    EXPECT_TRUE((std::is_same_v<MKS::base_unit<Length>, unit<MKS,NQ{2}>>)) << "got: " << demangle(typeid(MKS::base_unit<Length>).name());
-    EXPECT_TRUE((std::is_same_v<MKS::base_unit<Mass>, unit<MKS,NQ{3}>>)) << "got: " << demangle(typeid(MKS::base_unit<Mass>).name());
-    EXPECT_TRUE((std::is_same_v<MKS::base_unit<Time>, unit<MKS,NQ{5}>>)) << "got: " << demangle(typeid(MKS::base_unit<Time>).name());
+    EXPECT_TRUE((std::is_same_v<MKS::base_unit_type<Length>, unit<MKS,NQ{2}>>)) << "got: " << demangle(typeid(MKS::base_unit<Length>).name());
+    EXPECT_TRUE((std::is_same_v<MKS::base_unit_type<Mass>, unit<MKS,NQ{3}>>)) << "got: " << demangle(typeid(MKS::base_unit<Mass>).name());
+    EXPECT_TRUE((std::is_same_v<MKS::base_unit_type<Time>, unit<MKS,NQ{5}>>)) << "got: " << demangle(typeid(MKS::base_unit<Time>).name());
 }
-
-///\todo 
 
 TEST(UnitTests, test_unit_comparison)
 {
@@ -66,4 +64,15 @@ TEST(UnitTests, test_unit_comparison)
     EXPECT_FALSE((unit<MKS,NQ{}>()!=  unit<MKS2,NQ{}>()));
     EXPECT_FALSE((unit<MKS2,NQ{}>()!=  unit<MKS,NQ{}>()));
 
+}
+
+TEST(UnitTests, test_unit_ostreaming)
+{
+    using primordial::NQ;
+    using primordial::unit;
+    {
+        std::stringstream s;
+        s << unit<MKS,NQ{}>{};
+        EXPECT_EQ(s.str(), "");
+    }
 }
