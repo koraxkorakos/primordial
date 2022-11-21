@@ -3,18 +3,18 @@ primordial - lightweight C++ compile time units and quantities
 
 (C)opright Christian Kotz 2022
 
-This small library has bee developed as a byproduct of a presenation at ITK CoP C++.
-The aim of the presentation had been to show in a easy to understand real world example 
-the usefulness of C++ template metaprogramming to improve code saftey by  compile time checks
+This small library has been developed as a byproduct of a presenation at ITK CoP C++.
+The aim of the presentation had been to show in an easy to understand real world example 
+the usefulness of C++ template metaprogramming to improve code saftey by compile time checks
 under the title "Compile-time Physical UNITS. C++ template Meta Programming for saftey."
 
-The library had been used to verify concepts shown at the presentation and been put onb Github 
-after requestv by te audience.  It is a minimal functional demo, lacks many non existential 
+The library had been used to verify concepts shown at the presentation and been put on Github 
+after request by the audience.  It is a minimal functional demo, lacks many non existential 
 features larger preexisting unit libraries provide (For a list see earlier efforts). However,
-you are welcome to add these by prividing code.
+you are welcome to add these by providing code.
 
-For a full blown implementation of compile time physical units habve a look at the proposed
-C++ Standard library addition fpe units (scheduled for C++ 2026, if accepted).
+For a full blown implementation of compile time physical units have a look at the proposed
+C++ Standard library addition for units (scheduled for C++ 2026, if accepted).
 
 Aims
 ----
