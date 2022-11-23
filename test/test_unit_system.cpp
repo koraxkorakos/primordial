@@ -64,25 +64,13 @@ TEST(UnitTests, test_unit_comparison)
     using namespace primordial;
 
     EXPECT_TRUE((unit<MKS,NQ{2,3}>() == unit<MKS,NQ{2,3}>()));
-    EXPECT_FALSE((unit<MKS,NQ{2,3}>() == unit<MKS,NQ{3,2}>()));
     EXPECT_FALSE((unit<MKS,NQ{2,3}>() != unit<MKS,NQ{2,3}>()));
-    EXPECT_TRUE((unit<MKS,NQ{2,3}>() != unit<MKS,NQ{3,2}>()));
 
     EXPECT_TRUE((unit<MKS,NQ{1,1}>() == unit<MKS,NQ{1,1}>()));
     EXPECT_FALSE((unit<MKS,NQ{1,1}>() != unit<MKS,NQ{1,1}>()));
 
     EXPECT_TRUE((unit<MKS,NQ{}>() == unit<MKS2,NQ{}>()));
     EXPECT_FALSE((unit<MKS,NQ{}>() != unit<MKS2,NQ{}>()));
-
-    EXPECT_FALSE((unit<MKS,NQ{}>() == unit<MKS2,NQ{2}>()));
-    EXPECT_FALSE((unit<MKS2,NQ{2}>() == unit<MKS,NQ{1}>()));
-    EXPECT_TRUE((unit<MKS,NQ{}>() != unit<MKS2,NQ{2}>()));
-    EXPECT_TRUE((unit<MKS2,NQ{2}>() != unit<MKS,NQ{1}>()));
-
-    EXPECT_FALSE((unit<MKS,NQ{2}>() == unit<MKS,NQ{3}>()));
-    EXPECT_FALSE((unit<MKS,NQ{3}>() == unit<MKS,NQ{2}>()));
-    EXPECT_TRUE((unit<MKS,NQ{2}>() != unit<MKS,NQ{3}>()));
-    EXPECT_TRUE((unit<MKS,NQ{3}>() != unit<MKS,NQ{2}>()));
 
     EXPECT_FALSE((unit<MKS,NQ{}>() !=  unit<MKS,NQ{}>()));
     EXPECT_FALSE((unit<MKS,NQ{}>()!=  unit<MKS2,NQ{}>()));
@@ -127,6 +115,4 @@ TEST(UnitTests, test_unit_ostreaming)
         s << unit<MKS,NQ{2,25}>{};
         EXPECT_EQ(s.str(), "m/s^2");
     }
-
-
 }

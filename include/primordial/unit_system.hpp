@@ -81,20 +81,13 @@ namespace primordial
     // equality  / inequality operators
         friend constexpr bool operator==(unit, unit){ return true; }                           ///< \overload
         friend constexpr bool operator!=(unit, unit){ return false; }                          ///< \overload
-
-        template <unit_system_type sys2>
-        friend constexpr bool operator==(unit, unit<sys2,NQ{}>){ return q == NQ{}; }           ///< \overload
-
-        template <unit_system_type sys2>
-        friend constexpr bool operator!=(unit, unit<sys2,NQ{}>){ return q != NQ{}; }           ///< \overload
-
-
-        template <NQ q_rhs>
-        friend constexpr bool operator==(unit, unit<system,q_rhs>){ return false; }            ///< \overload
-
-        template <NQ q_rhs>
-        friend constexpr bool operator!=(unit, unit<system,q_rhs>){ return true; }             ///< \overload    
     };
+
+    template <unit_system_type sys, unit_system_type sys2>
+    constexpr bool operator==(unit<sys,NQ{}>, unit<sys2,NQ{}>){ return true; }    ///< \overload for scalars of different systems
+
+    template <unit_system_type sys, unit_system_type sys2>
+    constexpr bool operator!=(unit<sys,NQ{}>, unit<sys2,NQ{}>){ return false; }   ///< \overload for scalars of different systems
 
     /// poison defective type
     template <unit_system_type system> struct unit<system, NQ::defective()>{};    

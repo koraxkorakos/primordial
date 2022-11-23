@@ -3,6 +3,7 @@
 #include <primordial/nq.hpp>
 #include <primordial/unit_system.hpp>
 #include <primordial/powermap.hpp>
+#include <concepts>
 
 namespace primordial
 {           
@@ -126,6 +127,15 @@ namespace primordial
             using C = std::common_type_t<S,S_RHS>;            
             return quantity<decltype(U() * U_rhs{}), C, kind>{lhs.get_cofactor() / rhs.get_cofactor()};
         }
+
+        template <unit_type U2, arithmetic_type S2>
+        friend constexpr bool operator<=>(quantity const &lhs, quantity<U,S2,kind> const &rhs) 
+            requires requires(S a, S2 b){ {a<=>b} -> std::convertible_to<bool>; } 
+            && requires (U a, U2 b){ {a==b} -> std::convertible_to<bool>; } 
+        {
+            return lhs.value <=> rhs.value;
+        }
+
     };
 
 
