@@ -17,7 +17,30 @@ namespace{
    class Time{};   
 
    struct MKS : ::primordial::unit_system<MKS,Length, Mass, Time>{};
+
+    struct MKS_unit_streamer : primordial::unit_streamer_interface
+    {
+        virtual void streamput(std::ostream &os, unsigned k) const override
+        {
+            switch(k)
+            {
+            case 0: os << 'm'; break;
+            case 1: os << "kg"; break;
+            case 2: os << 's'; break;
+            default: os.setstate(std::ios::failbit);
+            }            
+        }
+    };
+
    struct MKS2 : ::primordial::unit_system<MKS,Length, Mass, Time>{};
+
+
+}
+
+namespace primordial
+{
+    template <>
+    struct unit_streamer_trait<MKS> : std::type_identity<MKS_unit_streamer>{};
 }
 
 TEST(UnitTests, test_unit_system)
@@ -73,6 +96,36 @@ TEST(UnitTests, test_unit_ostreaming)
     {
         std::stringstream s;
         s << unit<MKS,NQ{}>{};
+        EXPECT_TRUE(s);
         EXPECT_EQ(s.str(), "");
     }
+
+    {
+        std::stringstream s;
+        s << unit<MKS,NQ{2}>{};
+        EXPECT_TRUE(s);        
+        EXPECT_EQ(s.str(), "m");
+    }
+
+    {
+        std::stringstream s;
+        s << unit<MKS,NQ{3}>{};
+                EXPECT_TRUE(s);
+        EXPECT_EQ(s.str(), "kg");
+    }
+
+    {
+        std::stringstream s;
+        s << unit<MKS,NQ{5}>{};
+        EXPECT_TRUE(s);
+        EXPECT_EQ(s.str(), "s");
+    }
+
+    {
+        std::stringstream s;
+        s << unit<MKS,NQ{2,25}>{};
+        EXPECT_EQ(s.str(), "m/s^2");
+    }
+
+
 }
