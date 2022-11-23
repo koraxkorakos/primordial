@@ -124,6 +124,11 @@ namespace primordial{
         return t;
     }            
 
+    template <typename T>  constexpr text_decorator<T> ascii(T const & t)
+    {
+        return text_decorator<T>{t, vertical_text_position::regular, encoding::ascii};
+    }
+
     template <typename T,typename Other>  
     constexpr text_decorator<T> rebind(text_decorator<Other> const &source, ///< [in] decorator providing attributes
                                        T const &t                           ///< [in] new variable

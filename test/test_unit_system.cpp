@@ -1,6 +1,7 @@
 
 #include <primordial/unit_system.hpp>
 #include <primordial/unit_system_io.hpp>
+#include <primordial/powermap.hpp>// DEBUG
 #include <gtest/gtest.h>
 #include <iterator>
 #include <limits>
