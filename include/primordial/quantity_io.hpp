@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <primordial/quantity.hpp>
+#include <primordial/unit_system_io.hpp>
 
 namespace primordial
 {
