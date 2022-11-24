@@ -25,7 +25,7 @@ namespace primordial
 
     template <typename T> 
     concept unit_type = default_constructible<T> 
-                     && unit_system_type<typename T::system> && std::is_same<decltype(T::exponents), NQ>::value;
+                     && unit_system_type<typename T::system> && std::is_same<decltype(T::exponents), NQ const>::value;
 
 
 // FORWARD DECLARATIONS //////////////////////////////////////////////////////////////////////////////////////
@@ -109,10 +109,10 @@ namespace primordial
         using base_unit_type = unit<D, NQ{prime<T>}>;
 
         template <dimension_type T>
-        constexpr auto base_unit(){ return base_unit_type<T>{}; }
+        static constexpr auto base_unit(){ return base_unit_type<T>{}; }
 
         template <unsigned k>
-        constexpr auto base_unit_at(){ return base_unit_type<meta::at<k,dimensions>>{}; }
+        static constexpr auto base_unit_at(){ return base_unit_type<meta::at<k,dimensions>>{}; }
     };
 
 }

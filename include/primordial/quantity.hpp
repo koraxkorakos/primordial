@@ -14,15 +14,15 @@ namespace primordial
         absolute
     };
 
-    template <unit_type U, arithmetic_type S, quantity_kind kind = quantity_kind::relative>  class quantity;                    
+    template <unit_type auto U, arithmetic_type S, quantity_kind kind = quantity_kind::relative>  class quantity;                    
 
-    template <unit_type U, arithmetic_type S, quantity_kind kind> 
+    template <unit_type auto U, arithmetic_type S, quantity_kind kind> 
     constexpr auto relative_cast(quantity<U, S, kind> const & q)
     {
         return quantity<U, S, quantity_kind::relative>{q.get_cofactor()};
     }
 
-    template <unit_type U, arithmetic_type S, quantity_kind kind> 
+    template <unit_type auto U, arithmetic_type S, quantity_kind kind> 
     constexpr auto absolute_cast(quantity<U, S, kind> const &q)
     {
         return quantity<U, S, quantity_kind::absolute>{q.get_cofactor()};
@@ -60,12 +60,12 @@ namespace primordial
     ///\tparam S scalar should be a field or at least a ring if you do  not care for overflow
     ///\tparam S scalar should be a field or at least a ring if you do  not care for overflow
     ///\todo concept for system
-    template <unit_type U, arithmetic_type S, quantity_kind kind_> // S could also be array
+    template <unit_type auto U, arithmetic_type S, quantity_kind kind_> // S could also be array
     class quantity {
     public:
         using value_type = S;
-        using unit_t = U;
-        using system = typename U::system;
+        using unit_t = decltype(U);
+        using system = typename unit_t::system;
         static constexpr quantity_kind kind = kind_;
 
         value_type cofactor;
@@ -113,25 +113,25 @@ namespace primordial
         }
 
         template <NQ q_rhs, typename S_RHS, quantity_kind kind> 
-        friend constexpr auto operator*(quantity const &lhs, quantity<unit<system, q_rhs>, S_RHS, kind> const &rhs)
+        friend constexpr auto operator*(quantity const &lhs, quantity<unit<system , q_rhs>{}, S_RHS, kind> const &rhs)
         {
             using U_rhs = unit<system,q_rhs>;            
             using C = std::common_type_t<S,S_RHS>;            
-            return quantity<decltype(U() * U_rhs{}), C, kind>{lhs.get_cofactor() * rhs.get_cofactor()};
+            return quantity<U() * U_rhs{}, C, kind>{lhs.get_cofactor() * rhs.get_cofactor()};
         }
 
         template <NQ q_rhs, typename S_RHS> 
-        friend constexpr auto operator*(quantity const &lhs, quantity<unit<system, q_rhs>, S_RHS, kind> const &rhs)
+        friend constexpr auto operator*(quantity const &lhs, quantity<unit<system, q_rhs>{}, S_RHS, kind> const &rhs)
         {
             using U_rhs = unit<system,q_rhs>;            
             using C = std::common_type_t<S,S_RHS>;            
-            return quantity<decltype(U() * U_rhs{}), C, kind>{lhs.get_cofactor() / rhs.get_cofactor()};
+            return quantity<U() * U_rhs{}, C, kind>{lhs.get_cofactor() / rhs.get_cofactor()};
         }
 
-        template <unit_type U2, arithmetic_type S2>
+        template <unit_type auto U2, arithmetic_type S2>
         friend constexpr bool operator<=>(quantity const &lhs, quantity<U,S2,kind> const &rhs) 
             requires requires(S a, S2 b){ {a<=>b} -> std::convertible_to<bool>; } 
-            && requires (U a, U2 b){ {a==b} -> std::convertible_to<bool>; } 
+            && requires { {U==U2} -> std::convertible_to<bool>; } 
         {
             return lhs.value <=> rhs.value;
         }
