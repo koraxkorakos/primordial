@@ -87,7 +87,6 @@ TEST(QuantityTests, test_mult)
     EXPECT_EQ(result.unit, MKS_kilogram * MKS_meter);
 }
 
-
 TEST(QuantityTests, test_div)
 {
     using primordial::quantity;
@@ -97,7 +96,7 @@ TEST(QuantityTests, test_div)
     EXPECT_NEAR(result.cofactor, 10.0, 10e-8);
     EXPECT_EQ(result.kind, quantity_kind::relative);
     EXPECT_TRUE((std::is_same_v<double,decltype(result.cofactor)>));
-    EXPECT_EQ(result.unit, MKS_kilogram / MKS_meter) << "expected " << (MKS_kilogram / MKS_meter)<< ", got " << result.unit;
+    EXPECT_EQ(result.unit, MKS_meter/ MKS_kilogram) << "expected " << (MKS_meter / MKS_kilogram)<< ", got " << result.unit;
 }
 
 TEST(QuantityTests, test_plus)
@@ -157,4 +156,20 @@ TEST(DISABLED_QuantityTests, test_scalar_conversion)
 TEST(DISABLED_QuantityTests, test_assignment)
 {
     EXPECT_TRUE(false) << "unit test needs to be implemented.";
+}
+
+TEST(QuantityTests, test_ostreming)
+{
+    using std::stringstream;
+    using primordial::NQ;
+    using primordial::quantity;
+    using primordial::quantity_kind;
+
+    auto const result = quantity<MKS_meter,float>{20.0} / (quantity<MKS_second,double>{2.0f} * quantity<MKS_second,double>{5.0f});
+
+    stringstream s;
+    s << result;
+
+   EXPECT_EQ(result.unit.exponents, (NQ{2,25}));
+    EXPECT_EQ(s.str(), "2 m/s^2");
 }

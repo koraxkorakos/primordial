@@ -143,7 +143,7 @@ public: ///\note current Standard *requires* that constexpr classes used as non 
     uintmax_t den_; ///< denominator
 
     friend constexpr NQ operator+(NQ lhs, NQ rhs){ return NQ(lhs) += rhs; } /// (O)
-    friend constexpr NQ operator-(NQ lhs, NQ rhs){ return NQ(lhs) += rhs; } /// (O)
+    friend constexpr NQ operator-(NQ lhs, NQ rhs){ return NQ(lhs) -= rhs; } /// (O)
 
     friend constexpr bool operator==(NQ lhs, NQ rhs){ return lhs.num_ == rhs.num_ && lhs.den_ == rhs.den_; }
     friend constexpr bool operator!=(NQ lhs, NQ rhs){ return !(lhs == rhs); }

@@ -9,6 +9,6 @@ namespace primordial
     template <unit_type auto U, arithmetic_type S, quantity_kind kind>
     std::ostream &operator<<(std::ostream &os, quantity<U,S,kind> const &q)
     {
-        return os << q.cofactor << ' ' << U();
+        return os << q.cofactor << ' ' << U;
     }
 }
