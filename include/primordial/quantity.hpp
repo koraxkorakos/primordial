@@ -112,20 +112,18 @@ namespace primordial
             return { lhs.get_cofactor() - rhs.get_cofactor() };
         }
 
-        template <NQ q_rhs, typename S_RHS, quantity_kind kind> 
-        friend constexpr auto operator*(quantity const &lhs, quantity<unit<system , q_rhs>{}, S_RHS, kind> const &rhs)
+        template <unit_type auto U_rhs, typename S_RHS, quantity_kind kind> 
+        friend constexpr auto operator*(quantity const &lhs, quantity<U_rhs, S_RHS, kind> const &rhs)
         {
-            using U_rhs = unit<system,q_rhs>;            
             using C = std::common_type_t<S,S_RHS>;            
-            return quantity<U() * U_rhs{}, C, kind>{lhs.get_cofactor() * rhs.get_cofactor()};
+            return quantity<U() * U_rhs, C, kind>{lhs.get_cofactor() * rhs.get_cofactor()};
         }
 
-        template <NQ q_rhs, typename S_RHS> 
-        friend constexpr auto operator*(quantity const &lhs, quantity<unit<system, q_rhs>{}, S_RHS, kind> const &rhs)
+        template <unit_type auto U_rhs, typename S_RHS> 
+        friend constexpr auto operator/(quantity const &lhs, quantity<U_rhs, S_RHS, kind> const &rhs)
         {
-            using U_rhs = unit<system,q_rhs>;            
             using C = std::common_type_t<S,S_RHS>;            
-            return quantity<U() * U_rhs{}, C, kind>{lhs.get_cofactor() / rhs.get_cofactor()};
+            return quantity<U() * U_rhs, C, kind>{lhs.get_cofactor() / rhs.get_cofactor()};
         }
 
         template <unit_type auto U2, arithmetic_type S2>

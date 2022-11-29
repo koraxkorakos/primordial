@@ -76,7 +76,66 @@ TEST(QuantityTests, test_constructor)
     quantity<MKS_second,double> s{1};
 }
 
-TEST(QuantityTests, test_comparison)
+TEST(QuantityTests, test_mult)
+{
+    using primordial::quantity;
+
+    std::cerr << demangle(typeid(quantity<MKS_meter,double>{20.0}).name()) << std::endl;
+    std::cerr << demangle(typeid(quantity<MKS_kilogram,double>{20.0}).name()) << std::endl;
+
+    std::cerr << demangle(typeid(MKS_kilogram * MKS_meter).name()) << std::endl;
+
+    //auto const result = quantity<MKS_meter,double>{0.5} * quantity<MKS_kilogram,double>{20.0};
+    //EXPECT_NEAR(result.scalar, 10.0, 10e-8);
+}
+
+
+TEST(QuantityTests, test_div)
+{
+    EXPECT_TRUE(false) << "unit test needs to be implemented.";
+}
+
+TEST(QuantityTests, test_plus)
+{
+    EXPECT_TRUE(false) << "unit test needs to be implemented.";
+}
+
+TEST(QuantityTests, test_minus)
+{
+    EXPECT_TRUE(false) << "unit test needs to be implemented.";
+}
+
+TEST(QuantityTests, test_relatve_absolute)
+{
+    EXPECT_TRUE(false) << "unit test needs to be implemented.";
+}
+
+TEST(QuantityTests, test_equality_comparison)
+{
+    EXPECT_TRUE(false) << "unit test needs to be implemented.";
+}
+
+TEST(QuantityTests, test_equality_realtional_comparison)
+{
+    EXPECT_TRUE(false) << "unit test needs to be implemented.";
+}
+
+TEST(QuantityTests, test_value)
+{
+    EXPECT_TRUE(false) << "unit test needs to be implemented.";
+}
+
+TEST(QuantityTests, test_scalar_conversion_constructor)
+{
+    EXPECT_TRUE(false) << "unit test needs to be implemented.";
+}
+
+TEST(QuantityTests, test_scalar_conversion)
+{
+    EXPECT_TRUE(false) << "unit test needs to be implemented.";
+}
+
+TEST(QuantityTests, test_assignment)
 {
     EXPECT_TRUE(false) << "unit test needs to be implemented.";
 }
