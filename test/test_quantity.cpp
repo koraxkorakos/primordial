@@ -124,37 +124,37 @@ TEST(QuantityTests, test_minus)
     EXPECT_EQ(result.unit, MKS_meter);
 }
 
-TEST(QuantityTests, test_relatve_absolute)
+TEST(DISABLED_Tests, test_relatve_absolute)
 {
     EXPECT_TRUE(false) << "unit test needs to be implemented.";
 }
 
-TEST(QuantityTests, test_equality_comparison)
+TEST(DISABLED_Tests, test_equality_comparison)
 {
     EXPECT_TRUE(false) << "unit test needs to be implemented.";
 }
 
-TEST(QuantityTests, test_equality_realtional_comparison)
+TEST(DISABLED_Tests, test_equality_realtional_comparison)
 {
     EXPECT_TRUE(false) << "unit test needs to be implemented.";
 }
 
-TEST(QuantityTests, test_value)
+TEST(DISABLED_Tests, test_value)
 {
     EXPECT_TRUE(false) << "unit test needs to be implemented.";
 }
 
-TEST(QuantityTests, test_scalar_conversion_constructor)
+TEST(DISABLED_Tests, test_scalar_conversion_constructor)
 {
     EXPECT_TRUE(false) << "unit test needs to be implemented.";
 }
 
-TEST(QuantityTests, test_scalar_conversion)
+TEST(DISABLED_QuantityTests, test_scalar_conversion)
 {
     EXPECT_TRUE(false) << "unit test needs to be implemented.";
 }
 
-TEST(QuantityTests, test_assignment)
+TEST(DISABLED_QuantityTests, test_assignment)
 {
     EXPECT_TRUE(false) << "unit test needs to be implemented.";
 }
