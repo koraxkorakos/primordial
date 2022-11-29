@@ -1,0 +1,60 @@
+#include <iostream>
+#include <stringstream>
+#include <vector>
+#include <primordial/primordial.hpp>
+
+using namespace primordial;
+using std::stringstream;
+using std::cin;
+using std::cout;
+using std::endl;
+
+namespace
+{
+   auto &unit_names()
+   {
+        static std::vector<string> resullt;
+        return result;
+   };
+
+   // up to 12 units supported
+   template <unsignd n> struct U
+   {
+   };
+
+
+   struct Sys : ::primordial::unit_system<Sys,U<0>,U<1>,U<2>,U<3>,U<4>,U<5>,U<6>,U<7>,U<8>,U<9>,U<10>,U<11>,U<12>>{};
+
+    struct Sys_unit_streamer : primordial::unit_streamer_interface
+    {
+        virtual void streamput(std::ostream &os, unsigned k) const override
+        {
+            if (k < unit_names().size) os << unit_names()[k]; 
+            else os.setstate(std::ios::failbit);
+        }
+    };
+}
+
+namespace primordial
+{
+    template <>
+    struct unit_streamer_trait<Sys> : std::type_identity<Sys_unit_streamer>{};
+}
+
+int main(int argc, char * argv[]){
+
+    if (argc == 0) cerr << "usage: " << argv[0] << " " << "<space separated unit names>" << endl;
+
+   NQ q;   
+
+   for (int k = 1; k <= argc; ++k) unit_names.push_back(argv[k]);
+
+   for(;;)
+   {
+      cin >> q;
+      if (!q.valid()) return 0;
+      details::unit_stream_writer const writer{Sys(), q};
+      os << writer << endl;
+      
+   }
+}
