@@ -69,6 +69,7 @@ namespace primordial
         static constexpr quantity_kind kind = kind_;
 
         value_type cofactor;
+        static constexpr auto unit = U;
 
         constexpr quantity() : cofactor{} {}
         explicit(unit_t::exponents != NQ{}) quantity(S const &s) : cofactor{s} {}
@@ -85,14 +86,16 @@ namespace primordial
         constexpr std::enable_if_t<details::plus_allowed(kind,rhs_kind), quantity&>
             operator+=(quantity<U,S_RHS> const &other)
         { 
-            set_cofactor(this->value + other.get_cofactor()); return *this; 
+            cofactor = this->value + other.cofactor; 
+            return *this; 
         }  
 
         template <typename S_RHS, quantity_kind rhs_kind> 
             constexpr std::enable_if_t<details::minus_allowed(kind,rhs_kind), quantity&>
             operator-=(quantity<U,S_RHS> const &other)
         {
-             set_cofactor(this->value - other.get_cofactor()); return *this; 
+             cofactor = this->value - other.cofactor; 
+             return *this; 
         }  
 
         template <typename S_RHS, quantity_kind rhs_kind> 
@@ -100,7 +103,7 @@ namespace primordial
                                           quantity<U,std::common_type_t<S,S_RHS>,kind>>        
             operator+(quantity const &lhs, quantity<U, S_RHS, rhs_kind> const &rhs)
         {
-            return { lhs.get_cofactor() + rhs.get_cofactor() };
+            return { lhs.cofactor() + rhs.cofactor() };
         }
 
         template <typename S_RHS, quantity_kind rhs_kind> 
@@ -109,21 +112,21 @@ namespace primordial
             operator-(quantity const &lhs, quantity<U, S_RHS, rhs_kind> const &rhs)
         {
             using C = std::common_type_t<S,S_RHS>;            
-            return { lhs.get_cofactor() - rhs.get_cofactor() };
+            return { lhs.cofactor() - rhs.cofactor() };
         }
 
         template <unit_type auto U_rhs, typename S_RHS, quantity_kind kind> 
         friend constexpr auto operator*(quantity const &lhs, quantity<U_rhs, S_RHS, kind> const &rhs)
         {
             using C = std::common_type_t<S,S_RHS>;            
-            return quantity<U() * U_rhs, C, kind>{lhs.get_cofactor() * rhs.get_cofactor()};
+            return quantity<U * U_rhs, C, kind>{lhs.cofactor * rhs.cofactor};
         }
 
         template <unit_type auto U_rhs, typename S_RHS> 
         friend constexpr auto operator/(quantity const &lhs, quantity<U_rhs, S_RHS, kind> const &rhs)
         {
             using C = std::common_type_t<S,S_RHS>;            
-            return quantity<U() * U_rhs, C, kind>{lhs.get_cofactor() / rhs.get_cofactor()};
+            return quantity<U / U_rhs, C, kind>{lhs.cofactor / rhs.cofactor};
         }
 
         template <unit_type auto U2, arithmetic_type S2>

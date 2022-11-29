@@ -76,7 +76,7 @@ namespace primordial
         friend constexpr auto operator*(unit lhs, unit<system,q_rhs> rhs){ return unit<system,lhs.exponents + rhs.exponents>{}; }
         
         template <NQ q_rhs>
-        friend constexpr auto operator/(unit lhs, unit<system,q_rhs> rhs){ return unit<system,rhs.exponents - rhs.exponents>{}; }
+        friend constexpr auto operator/(unit lhs, unit<system,q_rhs> rhs){ return unit<system,lhs.exponents - rhs.exponents>{}; }
 
     // equality  / inequality operators
         friend constexpr bool operator==(unit, unit){ return true; }                           ///< \overload

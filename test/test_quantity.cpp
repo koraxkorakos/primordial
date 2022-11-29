@@ -79,20 +79,25 @@ TEST(QuantityTests, test_constructor)
 TEST(QuantityTests, test_mult)
 {
     using primordial::quantity;
+    using primordial::quantity_kind;
 
-    std::cerr << demangle(typeid(quantity<MKS_meter,double>{20.0}).name()) << std::endl;
-    std::cerr << demangle(typeid(quantity<MKS_kilogram,double>{20.0}).name()) << std::endl;
-
-    std::cerr << demangle(typeid(MKS_kilogram * MKS_meter).name()) << std::endl;
-
-    //auto const result = quantity<MKS_meter,double>{0.5} * quantity<MKS_kilogram,double>{20.0};
-    //EXPECT_NEAR(result.scalar, 10.0, 10e-8);
+     auto const result = quantity<MKS_meter,double>{0.5} * quantity<MKS_kilogram,double>{20.0};
+    EXPECT_NEAR(result.cofactor, 10.0, 10e-8);
+    EXPECT_EQ(result.kind, quantity_kind::relative);
+    EXPECT_EQ(result.unit, MKS_kilogram * MKS_meter);
 }
 
 
 TEST(QuantityTests, test_div)
 {
-    EXPECT_TRUE(false) << "unit test needs to be implemented.";
+    using primordial::quantity;
+    using primordial::quantity_kind;
+
+    auto const result = quantity<MKS_meter,double>{20.0} / quantity<MKS_kilogram,float>{2.0f};
+    EXPECT_NEAR(result.cofactor, 10.0, 10e-8);
+    EXPECT_EQ(result.kind, quantity_kind::relative);
+    EXPECT_TRUE((std::is_same_v<double,decltype(result.cofactor)>));
+    EXPECT_EQ(result.unit, MKS_kilogram / MKS_meter) << "expected " << (MKS_kilogram / MKS_meter)<< ", got " << result.unit;
 }
 
 TEST(QuantityTests, test_plus)
