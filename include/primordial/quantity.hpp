@@ -99,11 +99,12 @@ namespace primordial
         }  
 
         template <typename S_RHS, quantity_kind rhs_kind> 
-        friend constexpr std::enable_if_t<details::plus_allowed(kind,rhs_kind), 
+        friend constexpr std::enable_if_t<details::minus_allowed(kind,rhs_kind), 
                                           quantity<U,std::common_type_t<S,S_RHS>,kind>>        
             operator+(quantity const &lhs, quantity<U, S_RHS, rhs_kind> const &rhs)
         {
-            return { lhs.cofactor() + rhs.cofactor() };
+            using C = std::common_type_t<S,S_RHS>;            
+            return quantity<U,std::common_type_t<S,S_RHS>,kind>{ lhs.cofactor + rhs.cofactor };
         }
 
         template <typename S_RHS, quantity_kind rhs_kind> 
@@ -112,7 +113,7 @@ namespace primordial
             operator-(quantity const &lhs, quantity<U, S_RHS, rhs_kind> const &rhs)
         {
             using C = std::common_type_t<S,S_RHS>;            
-            return { lhs.cofactor() - rhs.cofactor() };
+            return quantity<U,std::common_type_t<S,S_RHS>,kind>{ lhs.cofactor - rhs.cofactor };
         }
 
         template <unit_type auto U_rhs, typename S_RHS, quantity_kind kind> 

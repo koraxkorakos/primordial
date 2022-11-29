@@ -102,12 +102,26 @@ TEST(QuantityTests, test_div)
 
 TEST(QuantityTests, test_plus)
 {
-    EXPECT_TRUE(false) << "unit test needs to be implemented.";
+    using primordial::quantity;
+    using primordial::quantity_kind;
+
+    auto const result = quantity<MKS_meter,double>{20.0} + quantity<MKS_meter,float>{2.0f};
+    EXPECT_NEAR(result.cofactor, 22.0, 10e-8);
+    EXPECT_EQ(result.kind, quantity_kind::relative);
+    EXPECT_TRUE((std::is_same_v<double,decltype(result.cofactor)>));
+    EXPECT_EQ(result.unit, MKS_meter);
 }
 
 TEST(QuantityTests, test_minus)
 {
-    EXPECT_TRUE(false) << "unit test needs to be implemented.";
+    using primordial::quantity;
+    using primordial::quantity_kind;
+
+    auto const result = quantity<MKS_meter,float>{20.0} - quantity<MKS_meter,double>{2.0f};
+    EXPECT_NEAR(result.cofactor, 18.0, 10e-8);
+    EXPECT_EQ(result.kind, quantity_kind::relative);
+    EXPECT_TRUE((std::is_same_v<double,decltype(result.cofactor)>));
+    EXPECT_EQ(result.unit, MKS_meter);
 }
 
 TEST(QuantityTests, test_relatve_absolute)
