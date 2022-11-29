@@ -68,6 +68,11 @@ namespace primordial
                 : streamer{unit_streamer_trait_t<sys>{}}
                 , powers{power_map<q>} {}
 
+            template <unit_system_type sys> 
+            explicit unit_stream_writer(sys const &, NQ q) 
+                : streamer{unit_streamer_trait_t<sys>{}}
+                , powers{power_map<q>} {}                
+
             unit_streamer_interface const &streamer;
             std::span<int const> powers;
         };
