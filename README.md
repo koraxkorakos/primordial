@@ -1,7 +1,7 @@
 primordial - lightweight C++ compile time units and quantities
 ==============================================================
 
-(C)opright Christian Kotz 2022
+(C)opyright Christian Kotz 2022
 
 This small library has been developed as a byproduct of a presenation at ITK CoP C++.
 The aim of the presentation had been to show in an easy to understand real world example 
@@ -13,7 +13,7 @@ after request by the audience.  It is a minimal functional demo, lacks many non 
 features larger preexisting unit libraries provide (For a list see earlier efforts). However,
 you are welcome to add these by providing code.
 
-For a full blown implementation of compile time physical units have a look at the proposed
+For a full-blown implementation of compile time physical units have a look at the proposed
 C++ Standard library addition for units (scheduled for C++ 2026, if accepted).
 
 Aims
@@ -25,14 +25,14 @@ Aims
 - fast at compile and runtime (see complexity below)
 
 ### Out of scope
-- Scaled unit and scale conversions could be added by choosing a suitable scalar type
+- scaled unit and scale conversions could be added by choosing a suitable scalar type
 - instantiations with overflow checking scalars types could be used 
 - casts 
 
 Complexity Measurents
 ---------------------
 
-Template Metaprogramming libraraies are known to be often very demandling on compile time ressources (memory, zime).
+Template Metaprogramming libraries are known to often be very demanding on compile time ressources (memory, time).
 The complexity of meta functions etc. is measured in number of template class instantiations, because the symbol table 
 needs to be updated, which envolves dynamic mermory atz compiloe time. Template function instatiations are even more
 demanding because they produce definitions, not just declarations.
